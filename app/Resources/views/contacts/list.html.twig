@@ -1,1 +1,18 @@
-<h1>Your lucky number is {{  }}</h1>
+{% extends 'base.html.twig' %}
+
+{% block title %}Contacts{% endblock %}
+
+{% block body %}
+    {% block header %}
+        <h1>Contacts</h1>
+        <h2>Contacts count :</h2> {{ contactsCount }}
+    {% endblock %}
+    <a href="{{ url('contacts_create_form') }}">Create</a>
+    {% for contact in contacts %}
+        <div class="contact">
+            {{ contact.name }} :  {{ contact.phoneNumber }}
+            <a href="{{ path('contacts_edit_form',{'id':contact.id}) }}">Edit</a>
+            <a href="{{ path('contact_delete',{'id':contact.id}) }}">Delete</a>
+        </div>
+    {% endfor %}
+{% endblock %}

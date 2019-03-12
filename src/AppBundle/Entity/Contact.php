@@ -9,7 +9,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -26,13 +25,11 @@ class Contact
     protected $id;
 
     /**
-     * @Assert\NotBlank
      * @ORM\Column(type="string", length=50)
      */
     protected $name;
 
     /**
-     * @Assert\NotBlank
      * @ORM\Column(type="string", length=50)
      */
     protected $phoneNumber;
@@ -78,7 +75,7 @@ class Contact
     }
 
     /**
-     * @param mixed $phoneNumder
+     * @param $phoneNumber
      */
     public function setPhoneNumber($phoneNumber)
     {

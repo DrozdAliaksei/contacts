@@ -11,51 +11,42 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Contact;
 use Doctrine\ORM\EntityRepository;
 
+/**
+ * Class ContactsRepository
+ *
+ * @method Contact|null find($id, $lockMode = null, $lockVersion = null)
+ */
 class ContactsRepository extends EntityRepository
 {
-    /**
-     * @return array
-     */
-    public function getContactsList()
-    {
-        return $this->_em->getRepository(Contact::class)->findAll();
-    }
-
-    /**
-     * @param $id
-     *
-     * @return object|null
-     */
-    public function getContactById($id)
-    {
-        return $this->_em->getRepository(Contact::class)->find($id);
-
-    }
-
     /**
      * @param Contact $contact
      *
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function createContact(Contact $contact)
+    public function save(Contact $contact)
     {
         $this->_em->persist($contact);
         $this->_em->flush();
     }
 
     /**
-     * @param $id
+     * @param $contact
      *
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function deleteContact($id)
+    public function delete(Contact $contact)
     {
-        $this->_em->remove($id);
+        $this->_em->remove($contact);
         $this->_em->flush();
     }
 
-    public function getCountOfContacts()
+    /**
+     * @return int
+     */
+    public function getCountOfContacts(): int
     {
-        return $this->_em->getRepository(Contact::class); //TODO finish later
+        $query = $this->createQueryBuilder('c')->select('count(c.id)')->getQuery();
+
+        return $query->getFirstResult(); //TODO exception
     }
 }

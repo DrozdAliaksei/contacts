@@ -37,9 +37,10 @@ class ContactsController extends Controller
      */
     public function contacts()
     {
-        $contacts = $this->contactsRepository->getContactsList();
+        $contacts = $this->contactsRepository->findAll();
+        $contactsCount = $this->contactsRepository->getCountOfContacts();
 
-        return $this->render('contacts/list.html.twig', ['contacts' => $contacts,]);
+        return $this->render('contacts/list.html.twig', ['contacts' => $contacts,'contactsCount' => $contactsCount]);
     }
 
     /**
@@ -48,41 +49,63 @@ class ContactsController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function createContact(Request $request)
+    public function addAction(Request $request)
     {
         $contact = new Contact();
-        $form = $this->createForm(ContactType::class,$contact);
+        $form = $this->createForm(ContactType::class, $contact);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $contact = $form->getData();
-            $this->contactsRepository->createContact($contact);
+            $this->contactsRepository->save($contact);
 
-            return $this->redirectToRoute('contacts_list', [], 301);
+            return $this->redirectToRoute('contacts_list');
         }
 
         return $this->render('contacts/form.html.twig', ['form' => $form->createView()]);
     }
 
     /**
-     * @Route("/contacts/edit/{id}", name= "contacts_edit_form",requirements={"id"="\d+"})
+     * @Route("/contacts/{id}/edit", name= "contacts_edit_form",requirements={"id"="\d+"})
+     * @param Request $request
+     * @param int     $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editContact(Request $request, $id = 1)
+    public function editAction(Request $request, int $id)
     {
-        $contact = $this->contactsRepository->getContactById($id);
+        $contact = $this->contactsRepository->find($id);
         if (!$contact) {
             throw $this->createNotFoundException('Such contact does not exists');
         }
-        $form = $this->createForm(ContactType::class,$contact);
+        $form = $this->createForm(ContactType::class, $contact);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $contact = $form->getData();
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($contact);
-            $entityManager->flush();
+            $this->contactsRepository->save($contact);
 
-            return $this->redirectToRoute('contacts_list', [], 301);
+            return $this->redirectToRoute('contacts_list');
         }
+
+        return $this->render('contacts/form.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/contacts/{id}/delete", name= "contact_delete",requirements={"id"="\d+"})
+     * @param int $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function deleteAction(int $id)
+    {
+        $contact = $this->contactsRepository->find($id);
+        if (!$contact) {
+            throw $this->createNotFoundException('Such contact does not exists');
+        }
+        $this->contactsRepository->delete($contact);
+
+        return $this->redirectToRoute('contacts_list');
     }
 }
