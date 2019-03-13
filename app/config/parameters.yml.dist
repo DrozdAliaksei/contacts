@@ -4,9 +4,9 @@
 parameters:
     database_host: localhost
     database_port: 3306
-    database_name:contacts
+    database_name: contacts
     database_user: root
-    database_password: @r1st3k
+    database_password: '@@r1st3k'
     # You should uncomment this if you want to use pdo_sqlite
     #database_path: '%kernel.project_dir%/var/data/data.sqlite'
 

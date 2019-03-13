@@ -35,6 +35,11 @@ class Contact
     protected $phoneNumber;
 
     /**
+     * @ORM\ManyToOne(targetEntity="ContactsCategory", inversedBy="contacts")
+     */
+    private $category;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -80,5 +85,21 @@ class Contact
     public function setPhoneNumber($phoneNumber)
     {
         $this->phoneNumber = $phoneNumber;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param mixed $category
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
     }
 }
