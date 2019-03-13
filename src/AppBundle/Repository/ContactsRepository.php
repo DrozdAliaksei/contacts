@@ -43,10 +43,10 @@ class ContactsRepository extends EntityRepository
     /**
      * @return int
      */
-    public function getCountOfContacts(): int
+    public function getCountOfContacts() : int
     {
-        $query = $this->createQueryBuilder('c')->select('count(c.id)')->getQuery();
+        $query = $this->createQueryBuilder('Contact')->select('count(1)')->getQuery();
 
-        return $query->getFirstResult(); //TODO exception
+        return  $query->getSingleScalarResult();
     }
 }

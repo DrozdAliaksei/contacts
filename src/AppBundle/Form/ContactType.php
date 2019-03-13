@@ -36,9 +36,10 @@ class ContactType extends AbstractType
                 'phoneNumber',
                 TelType::class,
                 [
-                    'constraints' => [new Length(['min' => 12, 'max' => 50]), new NotBlank()],
+                    'constraints' => [new Length(['min' => 3, 'max' => 12]), new NotBlank()],
                     'required'    => true,
                     'label'       => 'Phone number',
+                    'attr' => ['pattern'=>"[0-9]{3,12}"],
                 ]
             )
             ->add('save', SubmitType::class, ['label' => 'Add contact']);
