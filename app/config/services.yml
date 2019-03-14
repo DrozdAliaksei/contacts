@@ -45,10 +45,13 @@ services:
         arguments: [~, AppBundle\Entity\ContactsCategory, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Category }
+        calls:
+            - [addChild, ['@admin.contacts', 'category']]
 
     admin.contacts:
         class: AppBundle\Admin\ContactsAdmin
         arguments: [~, AppBundle\Entity\Contact, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Contact }
+
 

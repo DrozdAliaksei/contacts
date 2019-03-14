@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: developer
- * Date: 13.3.19
- * Time: 14.50
- */
 
 namespace AppBundle\Entity;
 
@@ -23,10 +17,12 @@ class ContactsCategory
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
     /**
      * @ORM\Column(type="string", length=50)
      */
     private $categoryName;
+
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Contact", mappedBy="category")
      */
@@ -84,5 +80,4 @@ class ContactsCategory
     {
         $this->categoryName = $categoryName;
     }
-
 }

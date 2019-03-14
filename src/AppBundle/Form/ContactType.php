@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: developer
- * Date: 12.3.19
- * Time: 12.47
- */
 
 namespace AppBundle\Form;
 
@@ -18,8 +12,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * Class ContactType
+ * @package AppBundle\Form
+ */
 class ContactType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -39,15 +41,21 @@ class ContactType extends AbstractType
                     'constraints' => [new Length(['min' => 3, 'max' => 12]), new NotBlank()],
                     'required'    => true,
                     'label'       => 'Phone number',
-                    'attr' => ['pattern'=>"[0-9]{3,12}"],
+                    'attr'        => ['pattern' => "[0-9]{3,12}"],
                 ]
             )
             ->add('save', SubmitType::class, ['label' => 'Add contact']);
     }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Contact::class,
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => Contact::class,
+            ]
+        );
     }
 }
